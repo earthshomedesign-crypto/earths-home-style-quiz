@@ -108,9 +108,15 @@ function tplWelcome() {
 }
 
 function brandMark() {
-  // Placeholder text lockup matching the real wordmark's tracked-caps treatment,
-  // until the actual logo file (with the hand-lettered monogram) is available.
-  return `<p class="brand-word">${escapeHtml(STUDIO.name)}</p>`;
+  // Typographic stand-in for the real hand-lettered logo (script "e/h" +
+  // diagonal slash) until that file is available as an image asset.
+  return `
+    <div class="brand-monogram" aria-hidden="true">
+      <span class="bm-slash"></span>
+      <span class="bm-e">e</span>
+      <span class="bm-h">h</span>
+    </div>
+    <p class="brand-word">${escapeHtml(STUDIO.name)}</p>`;
 }
 
 function tplClient() {
