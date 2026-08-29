@@ -97,6 +97,14 @@ p { margin: 0 0 1em; }
 .brand-mark { width: 64px; height: 64px; }
 .hero .lede { max-width: 560px; margin: 0 auto 24px; color: #55503f; font-size: 1.05rem; }
 
+.hero-scope {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--gold);
+  font-size: 0.95rem;
+  margin-bottom: 26px;
+}
+
 .hero-meta { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 28px; }
 .meta-pill {
   background: var(--white);
@@ -106,23 +114,6 @@ p { margin: 0 0 1em; }
   font-size: 0.82rem;
   color: var(--charcoal);
 }
-
-.hero-sections {
-  margin-top: 56px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 16px;
-  text-align: left;
-}
-.hero-section-card {
-  background: var(--white);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 18px 16px;
-}
-.hs-num { font-family: var(--serif); color: var(--gold); font-size: 0.85rem; }
-.hero-section-card h3 { font-size: 1rem; margin: 6px 0 4px; }
-.hero-section-card p { font-size: 0.85rem; color: #756B5A; margin: 0; }
 
 /* ---------- Buttons ---------- */
 

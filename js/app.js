@@ -14,12 +14,24 @@ function escapeHtml(str) {
 
 function buildFlow() {
   const flow = [{ type: "welcome" }, { type: "client" }];
-  VISUAL_PAIRS.forEach((p, i) => flow.push({ type: "visual", data: p, section: "Visual Preference", index: i + 1, total: VISUAL_PAIRS.length }));
-  LIFESTYLE_QUESTIONS.forEach((q, i) => flow.push({ type: "lifestyle", data: q, section: "Lifestyle & Home", index: i + 1, total: LIFESTYLE_QUESTIONS.length }));
-  PERSONALITY_STATEMENTS.forEach((s, i) => flow.push({ type: "personality", data: s, section: "Design Personality", index: i + 1, total: PERSONALITY_STATEMENTS.length }));
-  SENSORY_QUESTIONS.forEach((q, i) => flow.push({ type: "sensory", data: q, section: "Sensory Preference", index: i + 1, total: SENSORY_QUESTIONS.length }));
-  flow.push({ type: "values", section: "Values", index: 1, total: 1 });
+  VISUAL_PAIRS.forEach((p) => flow.push({ type: "visual", data: p }));
+  LIFESTYLE_QUESTIONS.forEach((q) => flow.push({ type: "lifestyle", data: q }));
+  PERSONALITY_STATEMENTS.forEach((s) => flow.push({ type: "personality", data: s }));
+  SENSORY_QUESTIONS.forEach((q) => flow.push({ type: "sensory", data: q }));
+  flow.push({ type: "values" });
   flow.push({ type: "report" });
+
+  // One continuous question count across the whole quiz — no visible "chapters".
+  const questionTypes = ["visual", "lifestyle", "personality", "sensory", "values"];
+  const qTotal = flow.filter((s) => questionTypes.includes(s.type)).length;
+  let qCounter = 0;
+  flow.forEach((s) => {
+    if (questionTypes.includes(s.type)) {
+      qCounter++;
+      s.qNum = qCounter;
+      s.qTotal = qTotal;
+    }
+  });
   return flow;
 }
 
@@ -70,7 +82,7 @@ function render() {
 function renderChrome(step) {
   const pct = Math.round((state.stepIndex / (state.flow.length - 2)) * 100);
   document.getElementById("progress-fill").style.width = pct + "%";
-  document.getElementById("progress-label").textContent = step.section ? `${step.section} · ${step.index} of ${step.total}` : "";
+  document.getElementById("progress-label").textContent = step.qNum ? `Question ${step.qNum} of ${step.qTotal}` : "Getting started";
   document.getElementById("back-btn").style.visibility = state.stepIndex > 1 ? "visible" : "hidden";
 }
 
@@ -82,23 +94,16 @@ function tplWelcome() {
     <div class="hero-mark">${brandMark()}</div>
     <p class="eyebrow">${STUDIO.name} · Interior Design Discovery</p>
     <h1>Let's understand how you actually want to live.</h1>
-    <p class="lede">Five short, instinctive mini-quizzes — your visual eye, your daily life, your design personality,
-      your senses, and what you value. No design vocabulary required. Answer quickly, with your gut.</p>
+    <p class="lede">One flowing quiz, answered instinctively — a little about how you see, how you live day to day,
+      what draws you in, how you sense a room, and what matters most to you. No design vocabulary required, no
+      separate tests. Just answer quickly, with your gut, start to finish.</p>
+    <p class="hero-scope">your eye · your everyday life · what draws you in · your senses · what you value</p>
     <div class="hero-meta">
       <div class="meta-pill">⏱ About 15 minutes</div>
-      <div class="meta-pill">5 quick parts</div>
+      <div class="meta-pill">One continuous flow</div>
       <div class="meta-pill">Private &amp; only shared with your designer</div>
     </div>
     <button class="btn btn-primary btn-lg" id="start-btn">Begin the discovery quiz</button>
-    <div class="hero-sections">
-      ${[
-        ["Visual Preference", "Instinctive pairs — no wrong answers."],
-        ["Lifestyle &amp; Home", "How you actually live day to day."],
-        ["Design Personality", "What draws you in, at your core."],
-        ["Sensory Preference", "Light, texture, sound, material."],
-        ["Values", "What matters most, beyond aesthetics."],
-      ].map(([t, d], i) => `<div class="hero-section-card"><span class="hs-num">0${i + 1}</span><h3>${t}</h3><p>${d}</p></div>`).join("")}
-    </div>
   </section>`;
 }
 
@@ -147,7 +152,6 @@ function tplVisual(step) {
   const p = step.data;
   return `
   <section class="panel panel-wide">
-    <p class="eyebrow">Visual Preference</p>
     <h2>${p.prompt}</h2>
     <p class="sub">Go with your gut — there's no wrong answer.</p>
     <div class="pair-grid">
@@ -170,7 +174,6 @@ function tplChoice(step, group) {
   const selected = isMulti ? (stored || []) : stored;
   return `
   <section class="panel">
-    <p class="eyebrow">${step.section}</p>
     <h2>${q.text}</h2>
     ${isMulti ? '<p class="sub">Select all that apply.</p>' : ""}
     <div class="option-list" data-multi="${isMulti}">
@@ -189,7 +192,6 @@ function tplPersonality(step) {
   const stored = state.answers.personality[s.id];
   return `
   <section class="panel">
-    <p class="eyebrow">Design Personality · ${step.index} of ${step.total}</p>
     <h2>“${s.text}”</h2>
     <div class="scale-row">
       ${PERSONALITY_SCALE.map((opt) => `
@@ -205,7 +207,6 @@ function tplValues(step) {
   const selected = state.answers.values;
   return `
   <section class="panel panel-wide">
-    <p class="eyebrow">Values</p>
     <h2>What matters most to you at home?</h2>
     <p class="sub">Tap up to ${VALUES_MAX_SELECT}, in the order they come to mind. The order matters — first tap ranks highest.</p>
     <div class="values-grid">
