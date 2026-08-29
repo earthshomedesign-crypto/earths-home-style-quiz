@@ -108,13 +108,9 @@ function tplWelcome() {
 }
 
 function brandMark() {
-  // Typographic stand-in for the real hand-lettered logo (script "e/h" +
-  // diagonal slash) until that file is available as an image asset.
   return `
-    <div class="brand-monogram" aria-hidden="true">
-      <span class="bm-slash"></span>
-      <span class="bm-e">e</span>
-      <span class="bm-h">h</span>
+    <div class="brand-monogram">
+      <img src="assets/earths-home-logo.png" alt="${escapeHtml(STUDIO.name)}">
     </div>
     <p class="brand-word">${escapeHtml(STUDIO.name)}</p>`;
 }
