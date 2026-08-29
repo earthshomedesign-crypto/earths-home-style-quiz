@@ -92,7 +92,7 @@ function tplWelcome() {
   return `
   <section class="hero">
     <div class="hero-mark">${brandMark()}</div>
-    <p class="eyebrow">${STUDIO.name} · Interior Design Discovery</p>
+    <p class="eyebrow">Interior Design Discovery</p>
     <h1>Let's understand how you actually want to live.</h1>
     <p class="lede">One flowing quiz, answered instinctively — a little about how you see, how you live day to day,
       what draws you in, how you sense a room, and what matters most to you. No design vocabulary required, no
@@ -108,11 +108,9 @@ function tplWelcome() {
 }
 
 function brandMark() {
-  return `<svg viewBox="0 0 120 120" class="brand-mark" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="60" cy="60" r="58" fill="none" stroke="#B08A4E" stroke-width="1.5"/>
-    <path d="M60 30 L92 65 L84 65 L84 92 L36 92 L36 65 L28 65 Z" fill="none" stroke="#3A332A" stroke-width="2.5" stroke-linejoin="round"/>
-    <path d="M46 92 V70 H74 V92" fill="none" stroke="#C1663B" stroke-width="2.5"/>
-  </svg>`;
+  // Placeholder text lockup matching the real wordmark's tracked-caps treatment,
+  // until the actual logo file (with the hand-lettered monogram) is available.
+  return `<p class="brand-word">${escapeHtml(STUDIO.name)}</p>`;
 }
 
 function tplClient() {

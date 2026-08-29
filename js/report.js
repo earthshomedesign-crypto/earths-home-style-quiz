@@ -49,7 +49,7 @@ function tplReport() {
   <section class="report">
     <div class="report-header">
       ${brandMark()}
-      <p class="eyebrow">${STUDIO.name} · Discovery Report</p>
+      <p class="eyebrow">Discovery Report</p>
       <h1>${escapeHtml(c.name || "Your client")}</h1>
       <p class="report-meta">${escapeHtml(c.project || "")}${c.project && c.timeline ? " · " : ""}${escapeHtml(c.timeline || "")} · ${dateStr}</p>
     </div>
